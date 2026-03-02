@@ -85,13 +85,9 @@ def find_optimal_k(X_scaled, max_k=10):
         if score > best_score:
             best_score, best_k = score, k
             
-    # Save silhouette plot
-    plt.figure(figsize=(8,5))
-    plt.plot(range(2, max_k+1), scores, marker='o')
-    plt.title('Silhouette Score vs. K')
-    plt.grid(True)
-    plt.savefig(os.path.join(FIGURES_OUT, "silhouette_scores.png"))
-    plt.close()
+    # Save silhouette plot using modular utility
+    from app_utils.visualizations import plot_silhouette_scores
+    plot_silhouette_scores(range(2, max_k+1), scores)
     
     return best_k
 
@@ -102,6 +98,7 @@ def main():
         df_features, df_movies, df_interactions = load_data()
         df_clean, df_scaled, feature_cols, scaler = preprocess_features(df_features)
         
+        from app_utils.visualizations import plot_silhouette_scores
         best_k = find_optimal_k(df_scaled, max_k=8)
         
         print(f"Executing K-Means with K={best_k}...")
@@ -110,7 +107,7 @@ def main():
         
         apply_dimensionality_reduction(df_scaled, labels)
         create_radar_chart(kmeans.cluster_centers_, feature_cols)
-        generate_artifacts(df_clean, df_scaled, labels, kmeans, feature_cols, df_movies, df_interactions, scaler)
+        generate_artifacts(df_clean, df_scaled, labels, kmeans, feature_cols, df_movies, df_interactions, scaler, best_k)
         
         print("\nAll done!")
     except Exception as e:

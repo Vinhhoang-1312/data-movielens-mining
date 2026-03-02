@@ -1,37 +1,50 @@
-# Data Movielens Mining
+# MovieLens Data Mining - Story A: Taste Tribes
 
-This project analyzes the MovieLens dataset for data mining purposes, including specialized recommendation systems like "Taste Tribes".
+Dự án phân tích và phân cụm người dùng dựa trên sở thích xem phim sử dụng tập dữ liệu MovieLens. Dự án được tổ chức theo cấu trúc Modular (mô-đun hóa) để đảm bảo tính bảo trì và mở rộng.
 
-## Features
-- **Taste Tribes Recommendation engine**: Personalized movie suggestions based on user clusters.
-- **Interactive Streamlit Dashboard**: Explore movie data and get recommendations.
-- **Data Preprocessing**: Scripts for cleaning and clustering MovieLens data.
+## 📂 Thư mục Artifacts dùng để làm gì?
 
-## Getting Started
+Thư mục `artifacts/` đóng vai trò là **Kho lưu trữ kết quả đầu ra** (Output) của quá trình khai phá dữ liệu. Theo đúng chuẩn quy trình Data Mining:
+- **Tách biệt Dữ liệu & Kết quả**: Giúp mã nguồn sạch sẽ, không bị trộn lẫn với các file kết quả (json, html, png).
+- **Lưu vết (Provenance)**: Chứa các file `run_manifest.json` để biết phiên bản code nào đã tạo ra kết quả này.
+- **Phục vụ Dashboard**: Streamlit App sẽ đọc dữ liệu từ đây để hiển thị lên giao diện mà không cần chạy lại các phép toán nặng.
 
-### Prerequisites
-- Python 3.9+
-- Pip
+---
 
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Vinhhoang-1312/data_movielens-mining.git
-   ```
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 🏗️ Cấu trúc dự án (Project Structure)
 
-### Running the App
-Start the Streamlit dashboard:
-```bash
-streamlit run app_story_a.py
+```text
+├── app_story_a.py              # Entry point của Dashboard (Streamlit)
+├── story_a_taste_tribes.py      # Pipeline chính chạy Clustering & Export kết quả
+├── app_utils/                  # Thư mục chứa các mô-đun hỗ trợ (Modular Logic)
+│   ├── config.py               # Quản lý đường dẫn, API Key và hằng số
+│   ├── data_loader.py          # Xử lý đọc/ghi file Parquet và gọi TMDB API
+│   ├── logic.py                # Thuật toán tính toán User Vector & Phân cụm
+│   ├── ui_components.py        # Giao diện Netflix CSS, Card, Grid và Skeleton Loading
+│   └── visualizations.py       # Xử lý vẽ biểu đồ (Radar, t-SNE, Silhouette)
+├── artifacts/                  # Kết quả đầu ra của Mining
+│   └── story_A/
+│       ├── figures/            # Biểu đồ (HTML tương tác & PNG tĩnh)
+│       ├── reports/            # File mô tả Cluster (Markdown), Manifest (JSON)
+│       └── tables/             # Danh sách userId đã được gán nhãn cụm (Parquet)
+├── data-warehousing/ # Dữ liệu đầu vào đã qua tiền xử lý (Mining-Ready)
+├── job.md                      # Hướng dẫn và yêu cầu từ Team Lead (Sỹ Hùng)
+├── requirements.txt            # Danh sách thư viện cần thiết
+└── .env                        # Chứa TMDB_API_KEY (Không đẩy lên Git)
 ```
 
-## Repository Structure
-- `app_story_a.py`: Main Streamlit application.
-- `story_a_taste_tribes.py`: Recommendation engine logic.
-- `requirements.txt`: Python dependencies.
-- `LICENSE`: Project license.
-- `.gitignore`: Excluded files.
+## 📝 Giải thích chi tiết từng file
+
+| File/Folder | Chức năng chính |
+| :--- | :--- |
+| `app_story_a.py` | Router chính, điều hướng hiển thị Tab Analytics và Tab Cold-Start Demo. |
+| `story_a_taste_tribes.py` | Script chạy ngầm để thực hiện K-Means, tìm K tối ưu và xuất "Artifacts". |
+| `app_utils/config.py` | Nơi duy nhất chứa các thông số cấu hình. Sửa ở đây sẽ áp dụng cho toàn dự án (DRY). |
+| `app_utils/ui_components.py` | Chứa "linh hồn" giao diện Netflix-style, đảm bảo UI chuyên nghiệp và nhất quán. |
+| `app_utils/data_loader.py` | Đảm nhận việc lấy dữ liệu từ đĩa hoặc từ Internet (Poster phim). |
+| `app_utils/logic.py` | Xử lý các phép toán tìm cụm gần nhất khi người dùng chọn sở thích trên App. |
+| `artifacts/story_A/reports/summary.md` | Báo cáo tóm tắt các phát hiện quan trọng sau khi chạy xong mô hình. |
+| `.gitignore` | Chặn các file rác (`__pycache__`), dữ liệu nặng và thông tin nhạy cảm đẩy lên GitHub. |
+
+---
+*Dự án được thực hiện bởi **Vĩnh Hoàng** - Thành viên Team MovieLens Data Mining.*

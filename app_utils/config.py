@@ -5,7 +5,7 @@ ARTIFACTS_DIR = "artifacts/story_A"
 REPORTS_DIR   = os.path.join(ARTIFACTS_DIR, "reports")
 TABLES_DIR    = os.path.join(ARTIFACTS_DIR, "tables")
 FIGURES_DIR   = os.path.join(ARTIFACTS_DIR, "figures")
-DATA_DIR      = "movielens-parquet-build-2026"
+DATA_DIR      = "data-warehousing"
 
 # For mining script compatibility (aliases)
 TABLES_OUT = TABLES_DIR

@@ -36,6 +36,18 @@ def apply_dimensionality_reduction(X_scaled, labels):
         color_discrete_sequence=px.colors.qualitative.Pastel
     )
     fig.write_html(os.path.join(FIGURES_OUT, "cluster_scatter_tsne.html"))
+    # fig.write_image(os.path.join(FIGURES_OUT, "cluster_map.png")) # Disabled: hangs in this environment
+
+def plot_silhouette_scores(k_range, scores):
+    """Save silhouette score plot as PNG."""
+    plt.figure(figsize=(8,5))
+    plt.plot(k_range, scores, marker='o')
+    plt.title('Silhouette Score vs. K')
+    plt.xlabel('Number of Clusters (K)')
+    plt.ylabel('Silhouette Score')
+    plt.grid(True)
+    plt.savefig(os.path.join(FIGURES_OUT, "silhouette_scores.png"))
+    plt.close()
 
 def create_radar_chart(centroids, feature_cols):
     """Create radar chart comparing genre preferences across clusters."""
@@ -74,3 +86,4 @@ def create_radar_chart(centroids, feature_cols):
       template="plotly_white"
     )
     fig.write_html(os.path.join(FIGURES_OUT, "genre_radar.html"))
+    # fig.write_image(os.path.join(FIGURES_OUT, "genre_radar.png")) # Disabled: hangs in this environment

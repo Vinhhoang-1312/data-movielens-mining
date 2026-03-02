@@ -13,7 +13,7 @@ env/
 .vscode/
 .ipynb_checkpoints/
 ml-latest/
-movielens-parquet-build-2026/
+data-warehousing/
 artifacts/
 *.parquet
 *.csv
